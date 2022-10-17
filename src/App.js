@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { getPosts } from './store/actions/home.action';
 
-function App() {
+function App(props) {
+
+  const { posts, fetchPosts } = props;
+
+  useEffect(() => {
+    console.log({posts})
+  }, [posts])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => fetchPosts(['concree'])}>Clique ici</button>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    posts: state.home.posts
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchPosts: (posts) => dispatch(getPosts(posts))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
